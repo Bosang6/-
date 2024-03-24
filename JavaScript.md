@@ -1,3 +1,5 @@
+# JavaScript基础
+
 ### 书写位置
 
 #### 1.内部js
@@ -184,5 +186,351 @@ parseFloat(变量名) 强行转换为浮点型
 
 ### 运算符
 
-- 赋值运算符 =
-- 
+- 变量 += 1 变量每次加1
+- 变量++ / 变量--
+
+##### 比较运算符
+
+- == 比较左右两边的值是否相等（有隐式转换）
+- === 全等，判断值和数据类型（严格判断）NaN 不等于任何数字，包括自己
+- !== 不等
+- 字符串比较，按ASCII来比
+
+##### 逻辑运算符
+
+- AND ：&&
+- OR：||
+- NOT：！
+
+### 语句
+
+##### if/else语句
+
+```javascript
+if（条件）{
+	过程
+}
+else {
+	过程
+}
+```
+
+##### 三元运算符
+
+```javascript
+条件 ? 满足条件的代码 ： 不满足条件的代码
+```
+
+可以用于赋值操作
+
+```javascript
+let num = 3 < 5 ? 3 : 5
+```
+
+先判断3 < 5, 左真右假，返回给num
+
+##### switch分支
+
+```javascript
+switch(数据){
+	case 值1:
+		代码1
+		break
+	case 值2:
+		代码2
+		break
+	case 值3:
+		代码3
+		break
+	default:
+		代码n
+		break
+}
+```
+
+数据和值 的类型和值必须全部相等（===）才会执行，没有一个满足时执行default。
+
+##### while循环
+
+```javascript
+while(条件){
+	代码
+}
+```
+
+continue 结束本次循环，进入下一个循环
+
+break终止循环
+
+##### for循环
+
+```javascript
+for(变量起始值;终止条件;变量变化){
+	代码
+}
+```
+
+### 数组操作
+
+- 查：数组[下标]
+- 改：数组[下标] = 新值
+- 增：arr.push(新增内容到末尾，并返回该数组的新长度)
+
+```javascript
+arr.push(元素1,元素2,元素3,....,元素n)
+```
+
+- arr.unshift 将一个或多个元素添加到数组开头，返回新数组长度
+
+```
+arr.unshift(元素1,元素2,元素3,....,元素n)
+```
+
+- 删：arr.pop 删除数组最后一个元素，并返回被删除的元素
+
+```javascript
+arr.pop()
+```
+
+- arr.shift 删除第一个元素
+
+```javascript
+arr.shift()
+```
+
+- arr.splice 删除指定元素
+
+```
+arr.splice(起始位置，删除几个元素)
+```
+
+删除几个元素不写则直接删到最后一个元素
+
+### 函数
+
+##### 声明
+
+执行特定任务的代码块
+
+```javascript
+function 函数名(参数列表){
+	函数体
+    return xxx
+}
+```
+
+在某些特殊情况，可能不需要用户输入参数列表，这时需要在定义函数时，给上一个默认值
+
+```javascript
+function getSum(x = 0, y = 0){
+	document.write(x + y)
+}
+
+getSum(1,2) // 会为函数赋值，改变x和y值
+getSum() //使用默认值
+```
+
+##### 匿名函数
+
+不具有函数名的函数
+
+函数表达式：将匿名函数赋值给一个变量
+
+```javascript
+ let fn = function(){
+ 	函数体
+ }
+ 
+ fn() //调用函数
+```
+
+##### 具名函数 和 匿名函数 的区别
+
+具名函数：在函数声明以后。可以在<script>标签内的任意一个位置调用 具名函数
+
+```javascript
+函数名(...) 
+function 函数名(参数列表){
+	函数体
+    return xxx
+}
+函数名(...)
+```
+
+匿名函数：只能在声明后才能使用
+
+```javascript
+ let fn = function(){
+ 	函数体
+ }
+ 
+ fn() //声明/赋值 后使用
+```
+
+##### 匿名函数立即执行
+
+防止变量污染，可以在立即执行函数内部随意声明，不影响全局变量
+
+```javascript
+// 版包裹式 (function(){ })()
+(function 函数名(形参列表){
+	函数体
+})(实参列表); //立即执行函数必须要加分号，否则报错
+// 全包裹式 (function(){ }())
+(function (形参列表){
+	函数体
+}(实参列表));
+```
+
+末尾的（）本质是调用函数
+
+立即执行函数可以写函数名
+
+##### 逻辑中断
+
+undefine 被定义为 false，若参数未被赋值，则默认为false
+
+```javascript
+console.log(11 && 22) //打印 22 AND运算：两侧都为真则返回右侧
+console.log(11 || 22) //打印 11 OR运算：两侧都为真则返回左侧
+```
+
+##### 各类数据类型的布尔值
+
+- String：''（空字符串为false）
+- Number：0 为false
+- undifined：false
+- null：false
+- NaN：false
+
+空字符串/null 在进行减法运算时，为被当作0来看
+
+```javascript
+"" + 1 //结果为 "1" 字符串1
+null/"" - 2 //结果为 -2 数字2
+(undefined) 变量 - 1 //结果为NaN
+```
+
+### 对象
+
+是一种无序的引用数据类型
+
+```javascript
+let 对象名 = {}
+let 对象名 = new Obeject
+```
+
+对象由属性和方法组成
+
+```javascript
+let 对象名 = {
+	属性1：属性值,
+    属性2：属性值,
+    属性3：属性值,
+	方法名：函数
+}
+```
+
+#### 对象使用
+
+##### 查
+
+```javascript
+对象.属性
+```
+
+属性名可以用引号来表示，但对其属性操作时，需要用中括号
+
+```javascript
+let person = {
+	'first-name':'huang',
+	'last-name':'xiaobo',
+	age = 18
+}
+
+console.log(person['first-name'])
+```
+
+##### 改
+
+```javascript
+对象.属性 = 新属性值
+```
+
+##### 增
+
+JavaScript允许在对象内增加新的属性
+
+```
+对象.新属性 = 属性值
+```
+
+##### 删除（不常用）
+
+```javascript
+delete 对象.属性
+```
+
+#### 对象方法
+
+```javascript
+let person = {
+	uname:'xiaobo',
+    eat: function(){
+        console.log('吃饭')
+    },
+    sleep: function(){
+        console.log('睡觉')
+    }
+}
+
+//调用
+person.eat()
+```
+
+#### 遍历对象
+
+打印对象内的所有属性
+
+##### for in 语法
+
+可以遍历数组，但不推荐，因为下标为string
+
+```javascript
+let arr = ['pink','red','green']
+for(let key in arr){
+	console.log(key) //打印arr的下标
+	console.log(arr[key]) //打印内容
+}
+```
+
+```javascript
+let obj = {
+	uname:'xiaobo',
+	age: 18,
+	gender: 'M'
+}
+
+for (let key in obj){ // key 是一个字符串！！！
+	console.log(key) // 打印属性名 uname, age, gender
+    console.log(obj.k) == console.log(obj.'uname') // 错！！！
+    console.log(obj[k]) //正确写法
+}
+```
+
+#### 内置对象Math
+
+- random 生成0-1的随机数，左闭右开
+- ceil 向上取整
+- floor 向下取整
+- max 找最大数
+- min 找最小数
+- pow 幂运算
+- abs 绝对值
+- round 四舍五入
+
+```javascript
+Math.函数名(参数)
+```
+
+# WEB-API
