@@ -1,5 +1,17 @@
 # JavaScript基础
 
+### JavaScript结构
+
+```
+					JavaScript
+				/				  \
+			ECMAScript			Web APIs
+							   /	   \
+							 DOM	    BOM
+```
+
+
+
 ### 书写位置
 
 #### 1.内部js
@@ -116,6 +128,12 @@ let arr = [数据1,数据2,数据3,.....,数据n]
 ```javascript
 const pi = 3.14
 ```
+
+#### const和let 使用场景
+
+当在声明对象和数组（也是一种对象）时，建议使用const来声明。因为他们在声明时，是以指针形式在栈（stack）中保存，内容则被保存在堆（heap）中。在对const声明的对象和数组操作/修改时，并不会因为声明为const而无法操作/修改
+
+在能够使用const的情况下，尽量优先使用
 
 ### 数据类型
 
@@ -534,3 +552,62 @@ Math.函数名(参数)
 ```
 
 # WEB-API
+
+用js去操作 html 和浏览器
+
+BOM （浏览器对象模型）
+
+### DOM
+
+DOM （文档对象模型）：Document Object Model 操作网页内容，实现用户交互
+
+DOM树：将 HTML 文档以树状图结构直观表现出来
+
+从HTML内获取一个标签，每个标签是以对象的形式传递到js中
+
+#### 打印对象
+
+```javascript
+const div = document.querySelector('div')
+console.dir(div) // div 是obj类型， 该行打印div内容
+```
+
+#### document 对象
+
+网页的所有内容都在document对象中
+
+document.write() ：就是document对象内的一个方法
+
+#### 获取DOM元素
+
+根据CSS选择器来获取DOM元素
+
+```javascript
+document.querySelector('div') // query 查询
+```
+
+在存在多个<div>时，querySelector 优先获取第一个<div>元素
+
+##### 以id形式获取
+
+```html
+<p id="intro">这是一个段落。</p>
+
+<script>
+  const intro = document.querySelector('#intro') //一定要加引号
+</script>
+```
+
+##### 获取ul列表的li
+
+```html
+<ul>
+    <li>测试1</li>
+    <li>测试2</li>
+    <li>测试3</li>
+</ul>
+<script>
+	const li = document.querySelector('ul li:first-child')
+</script>
+```
+
