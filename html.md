@@ -437,3 +437,128 @@ h3 {
 <div class="red">ciao!</div>
 ```
 
+#### 多类名
+
+一个标签内允许存在多个类
+
+```html
+<style>
+  .red {
+    color: red;
+  }
+  .font35 {
+    font-size: 35px;
+  }
+</style>
+<body>
+  <div class="red font35">   // class="类名1 类名2" 类名之间用空格隔开
+    小波 
+  </div>
+</body>
+```
+
+#### id选择器
+
+用#号定义样式，以id属性来设置选择器。和类名不同，id只能调用一次，而类名可以多次调用
+
+```html
+<style>
+  #red {
+    color: red;
+  }
+</style>
+<body>
+  <div id="red">
+    小波
+  </div>
+</body>
+```
+
+#### 通配符选择器
+
+用*号定义，表示选取页面中的所有元素，不需要调用
+
+```html
+<style>
+* {
+	color: red;
+}
+</style>
+```
+
+#### 后代选择器
+
+```html
+<body>
+	<ol>
+    <li>ol 1</li>
+    <li>ol 2</li>
+    <li>ol 3</li>
+    <li><a href="#">孙子</a></li>
+  </ol>
+  <ol clasee="nav">
+    <li>ol 1</li>
+    <li>ol 2</li>
+    <li>ol 3</li>
+    <li><a href="#">孙子</a></li>
+    <li><a href="#">孙子</a></li>
+  </ol>
+  <ul>
+    <li>ul 1</li>
+    <li>ul 2</li>
+    <li>ul 3</li>    
+  </ul>
+</body>
+
+<style>
+  ol li {					// 选择ol中的所有小li, 爹 仔 {...} 用空格隔开
+    color: red;
+  }
+  ol li a {				// 一层一层来选择
+    color: blue;
+  }
+  .nav li a {			// 可以通过类名来选择
+    color: yellow;
+  }
+</style>
+```
+
+#### 子选择器
+
+只能选择亲儿子，即下一级
+
+```html
+<body>
+  <div class="nav">
+    <a herf="#">div儿子</a>
+    <a herf="#">
+    	<p>div孙子</p>
+    </a>
+  </div>
+</body>
+
+<style>
+  .nav > a {      //选择nav类中的所有儿子a
+    color: red;
+  }
+</style>
+```
+
+#### 并集选择器
+
+选择多组标签，为他们定义相同的样式
+
+```html
+<body>
+  <div>小波</div>
+  <p>波桑</p>
+  <span>啵啵</span>
+</body>
+
+<style>
+  div,p {					//选择div和p标签
+    color: red;
+  }
+</style>
+```
+

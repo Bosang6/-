@@ -588,6 +588,19 @@ document.querySelector('div') // query 查询
 
 在存在多个<div>时，querySelector 优先获取第一个<div>元素
 
+##### 以类名形式获取
+
+```html
+<body>
+  <div class="box">123</div>
+  <script>
+  	const divbox = document.querySelector('.box') // '.类名'获取
+  </script>
+</body>
+```
+
+
+
 ##### 以id形式获取
 
 ```html
@@ -607,7 +620,7 @@ document.querySelector('div') // query 查询
     <li>测试3</li>
 </ul>
 <script>
-	const li = document.querySelector('ul li:first-child')
+	const li = document.querySelector('ul li:first-child') //获取第一个小li
 </script>
 ```
 
