@@ -28,7 +28,7 @@ public class Controller {
 
 ### fxml调用Controller的函数
 
-在fxml内，一定会要以#号来调用
+在fxml内，一定要以#号来调用
 
 ```java
 <?import javafx.scene.control.Button?>
