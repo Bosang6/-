@@ -631,3 +631,123 @@ createContext方法创建的共享变量是一个对象，该对象含有一个P
     </UserContext.Provider>
 ```
 
+## Hooks
+
+除了上述的useState 和useContext,还有其他6种常用的hooks
+
+### Reducer
+
+当我们希望通过一种方式统一管理状态，而不是通过多个useState方式来管理的话，我们可以用Reducer来统一管理。
+
+#### 声明
+
+创建一个Reducer函数，其参数为需要管理的状态和操作行为。通过swtich case模式来对状态进行修改。
+
+```react
+function numReducer (state, action){
+  switch (action.type) {
+    case "increment":
+      return state + 1
+    case "decrement":
+      return state - 1
+    default:
+      throw new Error()
+  }
+}
+```
+
+建立完Reducer函数之后，需要在修改状态的组件内声明一个useReducer
+
+```react
+const [state(状态当前值), dispatch(触发器)] = useReducer(Reducer触发函数, 初始值)
+```
+
+#### 使用
+
+在构造完触发器和初始值后，类似于setState方法，将触发器绑定在一个事件触发回调函数内，触发器内必须包含触发器类型type
+
+```react
+const numDecrementa = () => dispatch({type: "increment"})
+function numIncrementa(){ dispatch( {type: "decrement"} )}
+//type必须以对象形式包裹
+```
+
+### Ref
+
+通过useState,我们可以改变状态的值。若希望能够记住更变状态后的前一个值的话，我们可以通过useRef来完成。
+
+#### 声明
+
+先声明一个变量用于保存上一个状态值。
+
+```react
+const prevCount = useRef()
+```
+
+useRef方法返回一个对象，该对象含有一个current属性。通常我们在调用更变状态的回调函数时，先将上一个状态值保存的current属性内，然后再对状态进行修改。
+
+```react
+  function handleClick(){
+    prevCount.current = count
+    setCount(count + 1)
+  }
+```
+
+#### 使用
+
+在调用时，切记调用差值时使用prevCount.cerrent而不是prevCount，因为prevCount是一个对象而不是属性（保存状态的变量）。
+
+```react
+<div>{prevCount.current}</div>
+```
+
+#### Ref.current
+
+不仅能够保存状态值，它也会指向含有ref属性的HTML元素。
+
+```react
+function App() {
+  const inputRef = useRef(null)
+
+  function handleClick(){
+    inputRef.current.focus()
+  }
+
+  return (
+    <>
+      <div className="App">
+        <input type="text" ref={inputRef}></input>
+        <button onClick={handleClick}>按钮</button>
+      </div>
+    </>
+  );
+}
+```
+
+当通过button按钮触发事件，引起回调函数（handleClick）调用。回调函数通过inputRef.current指向含有ref={inputRef}属性的标签，通过focus方法，使得input输入窗口变为焦点事件（高亮输入框）。
+
+#### 父组件调用子组件函数
+
+在默认情况下，子组件的功能不对外开放。
+
+如果我们希望在父组件调用子组件的方法时，可以通过一些列特殊处理来达成。
+
+1. 改变子组件的定义方式
+
+   通过一个变量来保存一个函数表达式，该函数表达式必须由forwardRef方法来包裹，函数表达式内需要接收 props 和 ref属性
+
+   ```react
+   const Child = forwardRef(function (props, ref) {
+   	...
+   })
+   ```
+
+2. 子组件的函数声明方式
+
+   在Child组件内部，提供给父组件使用的函数需要用useImperativeHandle方法来包裹。该方法需要两个参数，第一个参数为ref，第二个参数是一个函数
+
+   ```
+   
+   ```
+
+   
