@@ -746,8 +746,26 @@ function App() {
 
    在Child组件内部，提供给父组件使用的函数需要用useImperativeHandle方法来包裹。该方法需要两个参数，第一个参数为ref，第二个参数是一个函数
 
+   ```react
+   const Child = forwardRef(function (props, ref) {
+   	useImperativeHandle(ref, () => ({
+           myFn: () => {
+               console.log('子组件提供的函数')
+           }
+       }))
+   })
    ```
+
+   这里需要注意第二个参数的用法。
+
+   第二个参数是一个箭头函数，其返回一个对象，该对象含有一个变量名为myFn，该变量保存一个箭头函数（myFn）。 
+
    
-   ```
+
+3. 在父组件调用
+
+   
+
+    
 
    
