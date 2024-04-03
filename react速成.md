@@ -764,8 +764,206 @@ function App() {
 
 3. 在父组件调用
 
+   ```react
+   import { useRef, forwardRef, useImperativeHandle} from 'react'
    
-
-    
-
+   const Child = forwardRef(function (props, ref) {
    
+     useImperativeHandle(ref, () => ({  //用括号包裹一个函数返回的对象，该对象含有myFn函数
+       myFn: () => {
+         console.log("hi")
+       }
+     }))
+   
+     return (
+       <div>子组件</div>
+     )
+   })
+   
+   
+   function App() {
+     const childRef = useRef()
+   
+     function handleClick(){
+       childRef.current.myFn() // 调用子组件的函数
+     }
+   
+     return (
+       <>
+         <div className="App">
+           <Child ref={childRef}/>
+           <button onClick={handleClick}>按钮</button>
+         </div>
+       </>
+     );
+   }
+   
+   export default App; 
+   ```
+
+### Effect
+
+React Hook提供的一个副作用钩子。
+
+在跟组件加载时，useEffect的内的函数会被默认执行两次。因为React开启了严格模式，来检查函数的纯度。
+
+```react
+useEffect( () => {
+	console.log("hi")
+})
+```
+
+#### useEffect的第二个参数
+
+该参数为一个数组，是一个依赖数组。当数组内的状态发生变化时，useEffect内部的函数就会被执行一次
+
+```react
+import { useEffect, useState} from 'react'
+
+
+function App() {
+
+  const [count, setCount] = useState(0)
+
+  useEffect( () => {
+    console.log("hi")
+  }, [count]) 		// 第二个数组参数，当count发生变化时，执行一次第一个参数的箭头函数
+
+  function handleClick(){
+    setCount(count + 1)
+  }
+
+  return (
+    <>
+      <div className="App">
+        <div onClick={handleClick}>{count}</div>
+        <button onClick={handleClick}>按钮</button>
+      </div>
+    </>
+  );
+}
+
+export default App;
+
+```
+
+### Memo
+
+在React中，当父组件需要重新渲染时，子组件也会跟着重新渲染一次。在某些时候，子组件的重新渲染是多余的，我们希望在子组件需要被重新渲染时才渲染。
+
+为了解决这个问题，React提供了useMemo方法。该方法提供了一个可操作的缓存空间，我们可以将一些操作缓存在一个变量中。
+
+```react
+function DoSomeMath( {value} ) {
+  const result = useMemo( () => {
+    let result = 0
+    for(let i = 0; i < 1000; i++){
+      result += value * 2
+    }
+    return result
+  }, [value])
+}
+```
+
+和useEffect一样，useMemo也存在第二个参数。该参数和Effect的作用一样，当数组内的状态发生变化时，useMemo内的函数才会被执行
+
+### CallBack
+
+和Memo的问题类似，useMemo解决了数据缓存问题。useCallBack则解决了函数问题。（问题：当父组件被重新渲染时，子组件也会重新渲染）
+
+#### 问题代码实例
+
+```react
+import { useState} from 'react'
+
+function Button({onClick}){
+  console.log("子组件被渲染")
+  return (
+    <button onClick={onClick}>子组件</button>
+  )
+}
+
+
+function App() {
+
+  const [count, setCount] = useState(0)
+
+  function update(){
+    setCount(count + 1)
+  }
+
+  function handleClick(){
+    console.log("子组件")
+  }
+
+  return (
+    <>
+      <div className="App">
+        <div>{count}</div>
+        <button onClick={update}>按钮</button>
+        <br />
+        <Button onClick={handleClick}></Button>
+      </div>
+    </>
+  );
+}
+
+export default App;
+```
+
+当点击父组件内的button按钮时，子组件也会随之渲染一次，打印“子组件”。
+
+#### 改变自定义函数式组件形式
+
+原函数式组件
+
+```react
+function Button({onClick}){
+  console.log("子组件被渲染")
+  return (
+    <button onClick={onClick}>子组件</button>
+  )
+}
+```
+
+#### 改变函数时组件
+
+将函数式组件改变为**记忆组件**
+
+通过一个const变量来保存函数，并用memo方法包裹函数。
+
+（memo方法是react自带的一个方法，需要导包）
+
+memo方法：将包裹的函数更变为一个记忆组件，在传入的Props参数不发生变化时，该组件就不会受到外部父组件的影响
+
+```react
+const Button = memo(function ({onClick}){
+  console.log("子组件被渲染")
+  return (
+    <button onClick={onClick}>子组件</button>
+  )
+})
+```
+
+#### 父组件函数问题
+
+在父组件被重新渲染时，父组件的内部函数会被认为是一个新的函数。从而导致了传入子组件的Props发生了变化（内容不变）。
+
+我们需要确保在父组件被重新渲染时，我们需要传给子组件的Prop/函数，不发生变化，即同一个props。
+
+#### useCallBack解决问题
+
+将父组件需要传出的函数作为useCallBack方法的第一个参数。第二个参数与之前的Hook函数相同，为一个依赖数组。
+
+1. 将回调函数改为箭头函数的形式，作为useCallBack的第一个参数。
+2. 通过一个变量来保存useCallBack方法
+
+```react
+  const handleClick = useCallback(() =>{
+    console.log("子组件")
+  },[])
+```
+
+### 自定义HOOK函数
+
+以use为开头的函数，
