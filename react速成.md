@@ -1051,6 +1051,14 @@ Redux可以独立于各种框架执行，用script标签来书写。
 
 #### 步骤
 
+0. 添加一个script标签，用于导入redux包
+
+   ```html
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js"></script>
+   ```
+
+   
+
 1. 定义reducer函数：根基不同的action对象，返回不同的新state
 
    该函数有2个参数，第一个为State状态，第二个为action对象，该对象含有一个type属性
@@ -1102,4 +1110,83 @@ Redux可以独立于各种框架执行，用script标签来书写。
    })
    ```
 
-6. 通过实例来渲染
+6. 通过实例来渲染，实例含有一个getState方法，该方法返回一个对象，其对象含有State属性。
+
+   通过DOM方法获取html内id为count的标签，再调用innerText属性完成修改。
+
+   ```javascript
+   store.subscribe( () => {
+        document.getElementById('count').innerText = store.getState().count
+   })
+   ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 封装库lodash
+
+安装
+
+```
+npm i lodash
+```
+
