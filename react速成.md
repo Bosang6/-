@@ -11,6 +11,8 @@ cd 项目名
 npm start 
 ```
 
+在网上下载的项目需要通过 **npm install** 来安装依赖
+
 #### index.js入口文件
 
 该文件引入了两个关键的库，并通过ReactDOM.createRoot方法创建了一个实例，用于渲染页面
@@ -308,6 +310,41 @@ setData(data.filter(item => item.id !== 2))
 ```
 
 将id不等于2的元素提取出来，并为data重新赋值
+
+### 表单受控绑定
+
+在React中，由State决定在页面上渲染的内容。当我们试图使用<input>标签来进行输入时，input自带一个value属性来保存输入内容。
+
+为了使得输入的内容能够以React形式渲染，需要将input和state进行绑定。即每更新一次输入内容，state发生改变，便于页面渲染。
+
+#### 步骤
+
+1. 准备一个State状态
+2. 将input标签的value属性与state绑定
+3. 将input标签的onChange属性绑定State的改变函数，并将通过DOM对象来获取value值，将其作为参数传递给State改变函数。
+
+```react
+import { useState } from 'react'
+
+function App() {
+
+  const [value, setValue] = useState('') // 1.准备一个state
+
+  return (
+    <>
+      <div className="App">
+        <input 
+          value={value} 																//读取数据
+          onChange={ (e) => setValue(e.target.value)}/> //将读取数据传递给setValue
+      </div>
+    </>
+  );
+}
+
+export default App;
+```
+
+
 
 ## 组件
 
@@ -966,4 +1003,103 @@ const Button = memo(function ({onClick}){
 
 ### 自定义HOOK函数
 
-以use为开头的函数，
+自定义HOOK函数用于逻辑个封装的复用
+
+需求：实现一个按钮，用于隐藏和显示一些内容。
+
+```react
+import { useState } from 'react'
+
+function useToggle(){												//封装函数
+  const [state, setState] = useState(true)
+  const toggle = () => setState(!state)
+
+  return {state, toggle}									  //返回对象
+}
+
+function App() {
+
+  const {state, toggle} = useToggle()				//声明对象，调用useToggle获取对象
+
+  return (
+    <>
+      <div className="App">
+        {state && <div>This is div</div>}		//判断state是否为真，来决定是否显示
+        <button onClick={toggle}>按钮</button>	//按钮触发setState回调函数
+      </div>
+    </>
+  );
+}
+
+export default App;
+```
+
+#### 思路
+
+1. 声明一个use开头的函数
+2. 在函数体内封装可复用的逻辑
+3. 把组件中需要的状态和回调，以数组或对象的形式return出去
+4. 在需要这个逻辑的组件中调用use函数，通过一个对象或数组来获取状态和回调
+
+## Redux
+
+是一个集中状态管理工具，通过集中管理的方式管理状态。
+
+Redux可以独立于各种框架执行，用script标签来书写。
+
+### JavaScript形式
+
+#### 步骤
+
+1. 定义reducer函数：根基不同的action对象，返回不同的新state
+
+   该函数有2个参数，第一个为State状态，第二个为action对象，该对象含有一个type属性
+
+   函数的返回值必须是一个对象，因为我们不能直接对状态这个变量进行修改，而是通过新的对象来替换就的对象。
+
+   ```javascript
+   function reducer(state = {count:0}, action){
+   	if(action.type === 'INCREMENT'){
+   		return {count : state.count += 1}
+   	}
+   	if(action.type === 'DECREMENT'){
+   		return {count : state.count -= 1}
+   	}
+   	return state
+   }
+   ```
+
+2. 将reducer函数作为Redux.createStore的参数来生成一个state实例，将实例用一个变量保存
+
+   ```javascript
+   const store = Redux.createStore(reducer)
+   ```
+
+3. 通过实例含有的subscribe方法，该方法可以将一个函数作为参数，每当state发生改变时，该方法内的函数就会被执行
+
+   ```javascript
+   store.subscribe( () => {
+        console.log('状态发生改变，我被执行了')
+   })
+   ```
+
+4. store实例含有dispatch方法，该方法需要一个对象作为参数，用于传递改变状态的action对象，此参数对象必须包含type属性。
+
+   ```javascript
+   store.dispatch({
+   	type: 'DECREMENT'
+   })
+   ```
+
+5. 将dispatch方法于标签做事件绑定
+
+   ```javascript
+   const inBtn = document.getElementById('increment')
+   inBtn.addEventListener('click', () => {
+   	store.dispatch({
+   	type: 'INCREMENT'
+   	})
+   })
+   ```
+
+6. 通过实例来渲染
