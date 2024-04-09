@@ -1051,13 +1051,20 @@ Redux可以独立于各种框架执行，用script标签来书写。
 
 #### 步骤
 
+<<<<<<< HEAD
+0. 导包
+
+   ```html
+   <script src="https://unpkg.com/redux@4.0.5/dist/redux.min.js"></script>
+   ```
+
+=======
 0. 添加一个script标签，用于导入redux包
 
    ```html
    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js"></script>
    ```
 
-   
 
 1. 定义reducer函数：根基不同的action对象，返回不同的新state
 
@@ -1110,6 +1117,27 @@ Redux可以独立于各种框架执行，用script标签来书写。
    })
    ```
 
+<<<<<<< HEAD
+6. 通过store实例来渲染，改写subscribe函数
+
+   ```javascript
+   store.subscribe( () => {
+        document.getElementById('count').innerText = store.getState.count
+   })
+   ```
+
+### React引用
+
+#### 插件安装
+
+```
+npm i @reduxjs/toolkit react-redux
+```
+
+在根目录中创建一个store文件夹
+
+![image-20240408095309053](/Users/xiaobo/Library/Application Support/typora-user-images/image-20240408095309053.png)
+=======
 6. 通过实例来渲染，实例含有一个getState方法，该方法返回一个对象，其对象含有State属性。
 
    通过DOM方法获取html内id为count的标签，再调用innerText属性完成修改。
