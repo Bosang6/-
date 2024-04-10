@@ -133,3 +133,81 @@ BooleanValue.set(true); //在内部可通过set方法来改变布尔值
 
 通过查看布尔值来判断是否执行操作。
 
+## 菜广教学
+
+### JavaFX应用程序的基本结构
+
+![image-20240410211352747](C:\Users\a1173\AppData\Roaming\Typora\typora-user-images\image-20240410211352747.png)
+
+#### 应用程序入口
+
+入口类需要继承Application类，并实现start方法。
+
+在main中，需要调用Application.lunch方法，该方法会自动调用start方法。
+
+```java
+import javafx.application.Application; //导包
+
+public class MyApplication extends Application {	//继承Application抽象类
+    @Override
+    public void start(Stage stage) throws IOException {	//实现start方法
+        FXMLLoader fxmlLoader = new FXMLLoader(MyApplication.class.getResource("hello-view.fxml"));		//获取fxml布局信息
+        Scene scene = new Scene(fxmlLoader.load(), 320, 240);	//新建一个窗口
+        stage.setTitle("Es1.3");				//窗口标题
+        stage.setScene(scene);					//将场景布局到窗口内
+        stage.show();							//显示窗口
+    }
+
+    public static void main(String[] args) {
+        launch();					//main方法调用launch方法，该方法会调用start方法
+    }
+}
+```
+
+#### Application类的三大重写方法
+
+在JavaFX中，入口类中需要重写三个方法
+
+- start ：用于建立窗口以及窗口内的场景和布局
+- init ：初始化内容，例如数据库连接等。
+- stop ：在应用程序关闭时调用该方法。 
+
+执行顺序：init → start → stop
+
+#### 事件绑定
+
+```java
+Button button = new Button("按钮名字");			//新建一个按钮
+BorderPane pane = new BorderPane(button);		//BorderPane布局，将button引入的窗口内
+
+button.setOnClick( e -> {						//为按钮绑定一个回调函数
+	getHostServices().showDocument("univr.it");		//通过getHostServices方法，打开系统默认的浏览器，通过showDocument方法，来决定进入哪个网站
+});
+```
+
+### Stage窗口设定
+
+#### 标题设定
+
+在start方法中，通过stage.setTitle方法来设定窗口名。
+
+```java
+stage.setTitle("我是窗口名");
+```
+
+#### 窗口图标
+
+通过getIcons()add()方法来设置应用程序图标。
+
+```java
+stage.setIcons().add(new Image("图标路径"));
+```
+
+#### 窗口大小变化
+
+通过setResizeable方法来设定窗口是否可以自定义拖拽大小，默认情况下为true。
+
+```java
+stage.setResizeable(false);
+```
+
