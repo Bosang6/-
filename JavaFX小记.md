@@ -211,3 +211,222 @@ stage.setIcons().add(new Image("图标路径"));
 stage.setResizeable(false);
 ```
 
+#### 窗口风格设置
+
+##### 默认风格
+
+在默认风格情况下，窗口栏拥有
+
+- 图标
+- 窗口名
+- 最小化/放大/关闭 栏
+
+默认风格可以手动设置也可以不设置。
+
+```java
+stage.initStyle(StageStyle.DECORATED);
+```
+
+##### 无窗口风格
+
+无窗口框，当没有内容时啥也不显示
+
+```java
+stage.initStyle(StageStyle.UNDECORATED);
+```
+
+##### 标题关闭风格
+
+只有标题和关闭窗口按钮
+
+```java
+stage.initStyle(StageStyle.UTILITY);
+```
+
+#### 窗口模式
+
+在应用程序打开多个窗口时，窗口之间存在多种关系，例如：A窗口和B窗口同时存在，B窗口由A窗口开启，在B窗口没有被关闭时，无法对A窗口进行操作。
+
+##### 模式设置
+
+```java
+stage.initModality(Modality.模式);
+```
+
+模式：
+
+- NONE：默认模式，多个窗口之间可以随意控制
+- APPLICATION_MODAL：当该窗口被打开时，用户只能操控该窗口，无法操作别的窗口。
+
+- WINDOW_MODAL：与APPLICATION模式不同，允许操作别的子窗口，不允许父窗口进行操作。
+
+#### 父窗口设定
+
+```
+stage.initOwner(FatherStage);
+```
+
+stage窗口为FatherStage的子窗口
+
+#### 自定义关闭按钮
+
+通过自定义关闭按钮，增加与用户的交互性。
+
+例如：在用户点击关闭按钮时，在默认情况下，系统会直接关闭窗口。我们可以通过自定义按钮，在用户点击关闭按钮时，提示用户是否需要关闭。
+
+步骤：
+
+- 消费（取消）默认关闭
+
+  取消操作系统退出的动作
+
+```
+Platform.setImplicitExit(false);
+```
+
+- 为关闭按钮提供一个新的事件函数
+
+```java
+state.setOnCloseRequest(event ->{
+	event.consume();	//取消关闭窗口动作
+  Alert alert = new Alert(Alert.AlertType.CONFIRMATION);	//新建一个提示弹窗
+  alert.setTitle("退出程序");	//弹窗标题
+  alert.setHeaderText(NULL);
+  alert.setContentText("确认退出程序？");	//弹窗内容
+  
+  Optional<ButtonType> result = alert.showAndWait();	//为弹窗设定两个按钮，并且等待用户点击按钮，返回到result
+  if(result.get() == ButtonType.OK){ //当返回值为确认时
+    Platform.exit();	//退出程序
+  }
+});
+
+```
+
+#### close方法
+
+此方法只会关闭窗口，但应用程序仍然在执行。
+
+```java
+stage.close();
+```
+
+### Scene场景
+
+通过Scene类来创建一个场景，参数为：
+
+- 布局： 可以是FXML布局文件，也可以是javaFX类中自带的类的实例
+- 长度
+- 高度
+
+```java
+Scene scene = new Scene(布局，长度，高度);
+```
+
+#### 场景改变鼠标图片
+
+```java
+scene.setCursor(new ImageCursor(new Image(图片url地址)));
+```
+
+通过在不同的场景切换鼠标图片，在游戏领域非常有用。
+
+### Node类
+
+Node类是一个抽象类，在JavaFX中，所有的组件（控件）都继承于Node类。该类提供了多种对场景控制的属性，例如坐标等。
+
+#### 常用的控制属性
+
+建立一个视图控件
+
+```java
+Label label = new Label("Hello World!");
+```
+
+我们可以为label实例赋予许多场景控制属性。
+
+- setLayoutX(int) ：X轴坐标
+- setLayoutY(int) ：Y轴坐标
+- setStyle("-fx-....")：与CSS一样，但需要在前面添加-fx-
+- setPreWidth(int)：宽度设置
+- setPreHeight(int)：高度设置
+- setAlignment(Pos.位置)
+- setVisible(boolean)：是否可见
+- setblendMode()：混合模式，叠加部分会混合，用于图画软件
+- setOpacity(int)：可见度设置
+- setRotate(int度数)：旋转
+- setTranslateX(int)：平行平移
+- setTranslateY(int)：纵向平移
+
+### UI控件的属性绑定和监听器
+
+在JavaFX中，属性绑定和监听由Property接口来完成。其内部含有一个bind方法来绑定。
+
+- bind：单向绑定
+- bindBidirctional：双向绑定
+- Unband/unbindBidirctianl：解除绑定
+
+#### 属性绑定
+
+例：场景与窗口的大小绑定
+
+在start方法中，建立一个场景，该场景内有一个黑色边框，白色实心的圆。
+
+```java
+public void start(Stage stage) throws Exception {
+  	AnchorPane root = new AnchorPane();
+    Scene scene = new Scene(root,500,500); 
+    Circle circle = new Circle();
+    circle.setCenterX(250);
+    circle.setCenterY(250);
+    circle.setRadius(100);
+    circle.setStroke(Color.BLACK);
+    circle.setFill(Color.WHITE);	
+  
+    root.getChildren().add(circle);
+
+    stage.setScene(scene);
+    stage.show();
+}
+```
+
+该园不会随着窗口的大小变化而改变大小，这不是我们所要的。我们希望该圆也会随着窗口的大小变化而变化。
+
+我们可以将圆的XY坐标绑定窗口的坐标
+
+```java
+circle.centerProperty().bind(scene.widthProperty().divide(2));
+circle.centerProperty().bind(scene.heightProperty().divde(2));
+```
+
+#### 监听器
+
+```java
+xxxProperty().addListener(new ChangeListener<number>() {
+	@Override
+	public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
+		...
+	}
+});
+```
+
+addListener方法需要一个监听器实例作为参数，该参数实例含有一个必须要重写的changed方法，该方法含有三个参数：
+
+- Observale：被监听的对象属性
+- oldValue：属性旧值
+- newValue：属性新值
+
+可以以lambda表达式来书写，使得更加可读
+
+```java
+xxxProperty().addListener((observable, oldValue, newValue) -> {
+	System.out.println("旧值：" + oldValue + "新值：" + newValue);
+});
+```
+
+监听器和绑定的使用因情况而论，当业务逻辑相对简单时，可以使用绑定方法，而当业务逻辑比较繁琐时，例如一个操作将会触发一些类的操作时，监听器更为方便。
+
+### 事件驱动编程
+
+当用户在应用界面进行操作时，每个操作事件需要对应一系列的事件处理函数或事件处理对象来完成操作。
+
+例如：点击一个按钮完成登陆操作。
