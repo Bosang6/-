@@ -430,3 +430,59 @@ xxxProperty().addListener((observable, oldValue, newValue) -> {
 当用户在应用界面进行操作时，每个操作事件需要对应一系列的事件处理函数或事件处理对象来完成操作。
 
 例如：点击一个按钮完成登陆操作。
+
+一旦一个用户对应用程序做出某个操作，应用程序会自动调用操作所对应的事件函数，并给函数传递一个**Event对象**。
+
+#### Event对象
+
+该对象包含了很多信息，例如鼠标的坐标等。通过
+
+```java
+getSource();
+```
+
+此方法可以获取event对象的事件元，即触发该事件的UI组件。
+
+#### 事件处理函数
+
+事件处理函数通常以setOnXXX形式出现，该事件函数需要new一个EventHandler<XXXEvent>对象，该对象需要重写handle方法，且唯一。这意味着我们可以通过lambda表达式来完成。
+
+例：按钮触发
+
+匿名类形式重写
+
+```java
+button.setOnAction(new EventHandler<ActionEvent>(){
+	@Override
+	public void handle(ActionEvent event){
+		lable.setLayoutY(lable.getLayout() - 5);
+	}
+});
+```
+
+lambda形式重写
+
+```java
+button.setOnAction( event -> lable.setLayoutY(lable.getLayout() - 5));
+```
+
+#### 文件拖拽获取绝对路径
+
+```java
+TextField textField = new TextField();
+textField.setLayoutX(500);
+textField.setLayoutY(350);
+
+textField.setOnDragOver(event -> {
+  event.acceptTransferModes(TransferMode.ANY);  //当将文件拖拽到textField时，会显示一个拖拽图标
+});
+
+textField.setOnDragDropped(event -> { 	//当松开鼠标时
+  Dragboard dragboard = evenet.getDragborad(); //获取容器
+  if(dragboard.hasFiles()){ //检查容器内是否有文件
+    String path = dragboard.getFiles().get(0).getAbsolutePath(); //获取容器内的第一个文件的绝对路径
+    textField.setText(path); //显示在textField内
+  }
+});
+```
+
