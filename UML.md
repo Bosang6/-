@@ -74,3 +74,32 @@ alt：类似于if else
 
 - 实心圆外再圈一圈：结束节点，一个流程允许存在多个结束节点
 
+
+
+### 类之间的关系
+
+继承关系 eredità
+
+![image-20240610094932211](https://raw.githubusercontent.com/Bosang6/Pic_Go_Save/main/picgo/202406100949389.png)
+
+关联 associazione
+
+![image-20240610095057710](https://raw.githubusercontent.com/Bosang6/Pic_Go_Save/main/picgo/202406100950910.png)
+
+聚合 aggregazione
+
+整体可独立的部分
+
+![image-20240610095234925](https://raw.githubusercontent.com/Bosang6/Pic_Go_Save/main/picgo/202406100952149.png)
+
+乌龟时龟群可独立的部分
+
+组合 composzione
+
+![image-20240610095343239](https://raw.githubusercontent.com/Bosang6/Pic_Go_Save/main/picgo/202406100953360.png)
+
+当父类被拆除时，子类也将不存在
+
+多重关系
+
+![image-20240610095512167](https://raw.githubusercontent.com/Bosang6/Pic_Go_Save/main/picgo/202406100955392.png)
